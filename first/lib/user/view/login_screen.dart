@@ -4,9 +4,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:first/common/const/colors.dart';
+import 'package:first/common/const/data.dart';
 import 'package:first/common/layout/default_layout.dart';
 import 'package:first/common/view/root_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../common/component/custom_text_form_field.dart';
 
@@ -23,6 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     final dio = Dio();
 
     // 에뮬레이터에서의 localhost
@@ -82,12 +85,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                         );
+
+                        final refreshToken = resp.data['refreshToken'];
+                        final accessToken = resp.data['accessToken'];
+
+                        await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                        await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
                         
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (_) => RootTab())
                         );
-
-                        print(resp.data);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PRIMARY_COLOR,
