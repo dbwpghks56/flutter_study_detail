@@ -5,12 +5,21 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:first/common/const/colors.dart';
 import 'package:first/common/layout/default_layout.dart';
+import 'package:first/common/view/root_tab.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/component/custom_text_form_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String userName = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +52,7 @@ class LoginScreen extends StatelessWidget {
                   CustomTextFormField(
                     hintText: "이메일을 입력해주세요.",
                     onChanged: (value) {
-
+                      userName = value;
                     },
                   ),
                   const SizedBox(height: 16.0,),
@@ -51,14 +60,14 @@ class LoginScreen extends StatelessWidget {
                     hintText: "비밀번호를 입력해주세요.",
                     obscureText: true,
                     onChanged: (value) {
-
+                      password = value;
                     },
                   ),
                   const SizedBox(height: 16.0,),
                   ElevatedButton(
                       onPressed: () async {
                         // ID:password
-                        final rawString = 'test@codefactory.ai:testtest';
+                        final rawString = '${userName}:${password}';
 
                         // base64 encoding
                         Codec<String, String> stringToBase64 = utf8.fuse(base64);
@@ -72,6 +81,10 @@ class LoginScreen extends StatelessWidget {
                               'authorization' : 'Basic ${basicToken}'
                             },
                           ),
+                        );
+                        
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => RootTab())
                         );
 
                         print(resp.data);
