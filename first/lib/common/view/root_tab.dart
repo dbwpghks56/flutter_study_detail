@@ -9,15 +9,58 @@ class RootTab extends StatefulWidget {
   State<RootTab> createState() => _RootTabState();
 }
 
-class _RootTabState extends State<RootTab> {
+class _RootTabState extends State<RootTab> with
+SingleTickerProviderStateMixin {
+  late TabController controller;
   int index = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    controller = TabController(
+      // children의 개수
+        length: 4,
+        vsync: this
+    );
+    controller.addListener(tabListener);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(tabListener);
+    super.dispose();
+  }
+
+  void tabListener() {
+    setState(() {
+      index = controller.index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '코팩 딜리버리',
-      child: Center(
-        child: Text("rootTab"),
+      child: TabBarView(
+        // 이렇게 하면 드래그로 페이지 이동이 되지 않는다.
+        physics: NeverScrollableScrollPhysics(),
+        controller: controller,
+        children: [
+          Container(
+            child: Text("home"),
+          ),
+          Container(
+            child: Text("food"),
+          ),
+          Container(
+            child: Text("receip"),
+          ),
+          Container(
+            child: Text("profile"),
+          )
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: PRIMARY_COLOR,
@@ -27,9 +70,7 @@ class _RootTabState extends State<RootTab> {
         // 기본은 shifting, 선택된 것이 크기가 변하고 나머지는 라벨이 안 나온다. 당연히 fixed는 반대
         type: BottomNavigationBarType.fixed,
         onTap: (int index) {
-          setState(() {
-            this.index = index;
-          });
+          controller.animateTo(index);
         },
         currentIndex: index,
         items: [
