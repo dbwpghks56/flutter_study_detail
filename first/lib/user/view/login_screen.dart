@@ -28,12 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final dio = Dio();
 
-    // 에뮬레이터에서의 localhost
-    final emulatorIp = "10.0.2.2:3000";
-    final simulatorIp = "127.0.0.1:3000";
-
-    final ip = Platform.isIOS ? simulatorIp : emulatorIp;
-
     return DefaultLayout(
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
