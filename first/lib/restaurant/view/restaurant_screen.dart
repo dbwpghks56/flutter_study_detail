@@ -42,31 +42,12 @@ class RestaurantScreen extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (_, index) {
                     final item = snapshot.data![index];
-                    final pItem = RestaurantModel(
-                      id: item['id'],
-                      name: item['name'],
-                      thumbUrl: 'http://${ip}${item['thumbUrl']}',
-                      tags: List<String>.from(item['tags']),
-                      priceRange: RestaurantPriceRange.values.firstWhere((element) =>
-                        element.name == item['priceRange']
-                      ),
-                      ratings: item['ratings'],
-                      ratingsCount: item['ratingsCount'],
-                      deliveryTime: item['deliveryTime'],
-                      deliveryFee: item['deliveryFee']
+                    final pItem = RestaurantModel.fromJson(
+                      json: item
                     );
 
-                    return RestaurantCard(
-                        image: Image.network(
-                          pItem.thumbUrl,
-                          fit: BoxFit.cover,
-                        ),
-                        name: pItem.name,
-                        tags: pItem.tags,
-                        ratingsCount: pItem.ratingsCount,
-                        deliveryTime: pItem.deliveryTime,
-                        deliveryFee: pItem.deliveryFee,
-                        ratings: pItem.ratings
+                    return RestaurantCard.fromModel(
+                        model: pItem,
                     );
                   },
                   // 각 아이템 사이사이에 들어갈 것을 정의
