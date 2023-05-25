@@ -1,4 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import '../../common/const/data.dart';
+
+part 'restaurant_model.g.dart';
 
 enum RestaurantPriceRange{
   expensive,
@@ -6,8 +10,13 @@ enum RestaurantPriceRange{
   cheap
 }
 
+@JsonSerializable()
 class RestaurantModel{
   final String id;
+
+  @JsonKey(
+    fromJson: pathToUrl,
+  )
   final String thumbUrl;
   final String name;
   final List<String> tags;
@@ -28,24 +37,31 @@ class RestaurantModel{
     required this.deliveryFee,
     required this.ratings
   });
-  
-  factory RestaurantModel.fromJson({
-    required Map<String, dynamic> json,
-  }) {
-    return RestaurantModel(
-        id: json['id'],
-        name: json['name'],
-        thumbUrl: 'http://${ip}${json['thumbUrl']}',
-        tags: List<String>.from(json['tags']),
-        priceRange: RestaurantPriceRange.values.firstWhere((element) =>
-        element.name == json['priceRange']
-        ),
-        ratings: json['ratings'],
-        ratingsCount: json['ratingsCount'],
-        deliveryTime: json['deliveryTime'],
-        deliveryFee: json['deliveryFee']
-    );
+
+  factory RestaurantModel.fromJson(Map<String, dynamic> json) => _$RestaurantModelFromJson(json);
+  Map<String, dynamic> toJson() => _$RestaurantModelToJson(this);
+
+  static pathToUrl(String value) {
+    return 'http://${ip}${value}';
   }
+
+  // factory RestaurantModel.fromJson({
+  //   required Map<String, dynamic> json,
+  // }) {
+  //   return RestaurantModel(
+  //       id: json['id'],
+  //       name: json['name'],
+  //       thumbUrl: 'http://${ip}${json['thumbUrl']}',
+  //       tags: List<String>.from(json['tags']),
+  //       priceRange: RestaurantPriceRange.values.firstWhere((element) =>
+  //       element.name == json['priceRange']
+  //       ),
+  //       ratings: json['ratings'],
+  //       ratingsCount: json['ratingsCount'],
+  //       deliveryTime: json['deliveryTime'],
+  //       deliveryFee: json['deliveryFee']
+  //   );
+  // }
 }
 
 
