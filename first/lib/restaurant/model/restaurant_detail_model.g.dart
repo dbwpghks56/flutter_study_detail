@@ -1,13 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'restaurant_model.dart';
+part of 'restaurant_detail_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-RestaurantModel _$RestaurantModelFromJson(Map<String, dynamic> json) =>
-    RestaurantModel(
+RestaurantDetailModel _$RestaurantDetailModelFromJson(
+        Map<String, dynamic> json) =>
+    RestaurantDetailModel(
       id: json['id'] as String,
       thumbUrl: DataUtils.pathToUrl(json['thumbUrl'] as String),
       name: json['name'] as String,
@@ -18,9 +19,14 @@ RestaurantModel _$RestaurantModelFromJson(Map<String, dynamic> json) =>
       deliveryTime: json['deliveryTime'] as int,
       deliveryFee: json['deliveryFee'] as int,
       ratings: (json['ratings'] as num).toDouble(),
+      detail: json['detail'] as String,
+      products: (json['products'] as List<dynamic>)
+          .map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
-Map<String, dynamic> _$RestaurantModelToJson(RestaurantModel instance) =>
+Map<String, dynamic> _$RestaurantDetailModelToJson(
+        RestaurantDetailModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'thumbUrl': instance.thumbUrl,
@@ -31,6 +37,8 @@ Map<String, dynamic> _$RestaurantModelToJson(RestaurantModel instance) =>
       'deliveryTime': instance.deliveryTime,
       'deliveryFee': instance.deliveryFee,
       'ratings': instance.ratings,
+      'detail': instance.detail,
+      'products': instance.products,
     };
 
 const _$RestaurantPriceRangeEnumMap = {
