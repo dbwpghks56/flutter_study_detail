@@ -3,6 +3,7 @@ import 'package:reverpodtest/layout/default_layout.dart';
 import 'package:reverpodtest/screen/autodispose_modifier_screen.dart';
 import 'package:reverpodtest/screen/family_modifier_screen.dart';
 import 'package:reverpodtest/screen/future_provider_screen.dart';
+import 'package:reverpodtest/screen/listen_provider_screen.dart';
 import 'package:reverpodtest/screen/state_notifier_provider_screen.dart';
 import 'package:reverpodtest/screen/state_provider_screen.dart';
 import 'package:reverpodtest/screen/stream_provider_screen.dart';
@@ -62,6 +63,14 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text(
                   'audo Provider Screen'
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => ListenProviderScreen()));
+              },
+              child: Text(
+                  'listen Provider Screen'
               ),
             ),
           ],
