@@ -73,6 +73,13 @@ class CodeGenerationScreen extends ConsumerWidget {
               ref.read(gStateNotifierProvider.notifier).decrement();
             },
             child: Text("down"),
+          ),
+          // invalidate 유효하지 않게 하다.
+          ElevatedButton(
+            onPressed: () {
+              ref.invalidate(gStateNotifierProvider);
+            },
+            child: Text("invalidate"),
           )
         ],
       ),
