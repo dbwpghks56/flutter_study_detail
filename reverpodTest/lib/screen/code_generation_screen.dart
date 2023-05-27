@@ -12,7 +12,6 @@ class CodeGenerationScreen extends ConsumerWidget {
     final state2 = ref.watch(gStateFutureProvider);
     final state3 = ref.watch(gStateFuture2Provider);
     final state4 = ref.watch(gStateMultiplyProvider(number1: 3, number2: 4));
-    final state5 = ref.watch(gStateNotifierProvider);
 
     return DefaultLayout(
       title: "codegeneration",
@@ -58,9 +57,23 @@ class CodeGenerationScreen extends ConsumerWidget {
             state4.toString(),
             textAlign: TextAlign.center,
           ),
-          Text(
-            state5.toString(),
-            textAlign: TextAlign.center,
+          // 전체 위젯을 빌드 하는 것이 아니라 원하는 위젯만 부분적으로 빌드할 수 있다.
+          Consumer(
+              builder: (context, ref, child) {
+                final state5 = ref.watch(gStateNotifierProvider);
+
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      state5.toString(),
+                      textAlign: TextAlign.center,
+                    ),
+                    child!,
+                  ],
+                );
+              },
+              child: Text('Hello'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -86,3 +99,25 @@ class CodeGenerationScreen extends ConsumerWidget {
     );
   }
 }
+
+class _State5Widget extends ConsumerWidget {
+  const _State5Widget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state5 = ref.watch(gStateNotifierProvider);
+
+    return Text(
+      state5.toString(),
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+
+
+
+
+
+
+
