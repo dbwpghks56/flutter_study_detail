@@ -3,6 +3,7 @@ import 'package:reverpodtest/layout/default_layout.dart';
 import 'package:reverpodtest/screen/future_provider_screen.dart';
 import 'package:reverpodtest/screen/state_notifier_provider_screen.dart';
 import 'package:reverpodtest/screen/state_provider_screen.dart';
+import 'package:reverpodtest/screen/stream_provider_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -35,6 +36,14 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text(
                   'Future Provider Screen'
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => StreamProviderScreen()));
+              },
+              child: Text(
+                  'Stream Provider Screen'
               ),
             ),
           ],
