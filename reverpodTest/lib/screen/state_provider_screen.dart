@@ -30,6 +30,14 @@ class StateProviderScreen extends ConsumerWidget {
               ),
               ElevatedButton(
                 onPressed: () {
+                  ref.read(numberProvider.notifier).state = ref.read(numberProvider.notifier).state - 1;
+                },
+                child: Text(
+                    'down'
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(builder: (_) => _NextScreen()));
                 },
                 child: Text(
