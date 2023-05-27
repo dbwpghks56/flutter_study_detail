@@ -9,14 +9,54 @@ class CodeGenerationScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state1 = ref.watch(gStateProvider);
+    final state2 = ref.watch(gStateFutureProvider);
+    final state3 = ref.watch(gStateFuture2Provider);
+    final state4 = ref.watch(gStateMultiplyProvider(number1: 3, number2: 4));
 
     return DefaultLayout(
       title: "codegeneration",
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            state1
-          )
+            state1,
+            textAlign: TextAlign.center,
+          ),
+          state2.when(
+            data: (data) {
+              return Text(
+                data.toString(),
+                textAlign: TextAlign.center,
+              );
+            },
+            error: (err, stack) {
+              return Text(err.toString());
+            },
+            loading: () {
+              return Center(
+                  child: CircularProgressIndicator());
+            },
+          ),
+          state3.when(
+            data: (data) {
+              return Text(
+                data.toString(),
+                textAlign: TextAlign.center,
+              );
+            },
+            error: (err, stack) {
+              return Text(err.toString());
+            },
+            loading: () {
+              return Center(
+                  child: CircularProgressIndicator());
+            },
+          ),
+          Text(
+            state4.toString(),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
