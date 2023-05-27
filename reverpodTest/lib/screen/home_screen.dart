@@ -4,6 +4,7 @@ import 'package:reverpodtest/screen/autodispose_modifier_screen.dart';
 import 'package:reverpodtest/screen/family_modifier_screen.dart';
 import 'package:reverpodtest/screen/future_provider_screen.dart';
 import 'package:reverpodtest/screen/listen_provider_screen.dart';
+import 'package:reverpodtest/screen/provider_screen.dart';
 import 'package:reverpodtest/screen/select_provider_screen.dart';
 import 'package:reverpodtest/screen/state_notifier_provider_screen.dart';
 import 'package:reverpodtest/screen/state_provider_screen.dart';
@@ -79,6 +80,14 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text(
                   'select Provider Screen'
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => ProviderScreen()));
+              },
+              child: Text(
+                  'Provider Screen'
               ),
             ),
           ],
