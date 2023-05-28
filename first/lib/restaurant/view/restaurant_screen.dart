@@ -61,8 +61,18 @@ class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListView.separated(
         controller: scrollController,
-        itemCount: cp.data.length,
+        itemCount: cp.data.length + 1,
         itemBuilder: (_, index) {
+          if(index == cp.data.length) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Center(
+                child: data is CursorPaginationFetchingMore ?
+                CircularProgressIndicator() : Text("Last Data"),
+              ),
+            );
+          }
+          
           final pItem = cp.data[index];
 
           return GestureDetector(
