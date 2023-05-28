@@ -11,16 +11,48 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/const/data.dart';
 
-class RestaurantScreen extends ConsumerWidget {
+class RestaurantScreen extends ConsumerStatefulWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
 
+  @override
+  ConsumerState<RestaurantScreen> createState() => _RestaurantScreenState();
+}
+
+class _RestaurantScreenState extends ConsumerState<RestaurantScreen> {
+  final ScrollController scrollController = ScrollController();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    scrollController.addListener(scrollListener);
+  }
+
+  void scrollListener() {
+    // 현재 위치가 최대 길이보다 조금 덜 되는 위치라면 새로운 데이터 추가요청(지금은 300pixel)
+    if (scrollController.offset > scrollController.position.maxScrollExtent - 300) {
+      ref.read(restaurantProvider.notifier).paginate(
+          fetchMore: true
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final data = ref.watch(restaurantProvider);
 
+    // 완전 첫 로딩
     if (data is CursorPaginationLoading) {
       return Center(child: CircularProgressIndicator());
+    }
+
+    // 에러
+    if(data is CursorPaginationError) {
+      return Center(
+        child: Text(
+          data.message
+        ),
+      );
     }
 
     final cp = data as CursorPagination;
@@ -28,6 +60,7 @@ class RestaurantScreen extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: ListView.separated(
+        controller: scrollController,
         itemCount: cp.data.length,
         itemBuilder: (_, index) {
           final pItem = cp.data[index];
