@@ -18,10 +18,48 @@ class RestaurantStateNotifier extends StateNotifier<CursorPaginationBase> {
   }) : super(CursorPaginationLoading()){
     paginate();
   }
-  paginate() async {
-    final resp = await repository.paginate();
+  void paginate({
+    int fetchCount = 20,
+    bool fetchMore = false,
+    // 강제 다시 로딩
+    bool forceRefetch = false,
+  }) async {
+    // 5가지 가능성
+    // 1) CursorPagination - 정상적으로 데이터가 있는 상태
 
-    state = resp;
+
+    // 2) CursorPaginationLoading - 로딩중
+
+
+    // 3) CursorPaginationError - 에러
+
+
+    // 4) CursorPaginationRefetch - 첫번쨰 페이지부터 다시 가져옴
+
+
+    // 5) CursorPaginationFetchMore - 추가 데이터를 pagination 해오라는 요청을 받았을 때
+
+
+
+    // 바로 반환 상황
+    // 1) hasmore = false 더 가져올 데이터 없음
+    if(state is CursorPagination && !forceRefetch) {
+      final pState = state as CursorPagination;
+
+      if(!pState.meta.hasMore) {
+        return;
+      }
+    }
+
+    // 2) 로딩중 - fetchMore: true
+    //    로딩중인데 fetMore: false 면 그냥 실행, 새로고침의 의도가 있을 수 있다..
+    final isLoading = state is CursorPaginationLoading;
+    final isRefetch = state is CursorPaginationRefetching;
+    final isFetchingMore = state is CursorPaginationFetchingMore;
+
+    if(fetchMore && (isLoading || isRefetch || isFetchingMore)) {
+      return;
+    }
   }
 }
 
