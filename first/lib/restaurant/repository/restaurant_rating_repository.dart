@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:first/common/const/data.dart';
 import 'package:first/common/dio/dio.dart';
+import 'package:first/common/repository/base_pagination_repository.dart';
 import 'package:first/rating/model/rating_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/http.dart';
@@ -17,7 +18,7 @@ final ratingProvider = Provider.family<RestaurantRatingRepository, String> ((ref
 });
 
 @RestApi()
-abstract class RestaurantRatingRepository {
+abstract class RestaurantRatingRepository implements IBasePaginationRepository<RatingModel> {
   factory RestaurantRatingRepository(Dio dio, {String baseUrl}) = _RestaurantRatingRepository;
 
 
