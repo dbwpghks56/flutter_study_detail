@@ -1,6 +1,6 @@
 import 'package:first/common/const/colors.dart';
 import 'package:first/common/layout/default_layout.dart';
-import 'package:first/product/view/product_tab.dart';
+import 'package:first/product/view/product_screen.dart';
 import 'package:first/restaurant/view/restaurant_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +51,7 @@ SingleTickerProviderStateMixin {
         controller: controller,
         children: [
           RestaurantScreen(),
-          ProductTab(),
+          ProductScreen(),
           Container(
             child: Text("receip"),
           ),
