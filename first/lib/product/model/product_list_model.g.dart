@@ -11,7 +11,7 @@ ProductListModel _$ProductListModelFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       name: json['name'] as String,
       detail: json['detail'] as String,
-      imgUrl: json['imgUrl'] as String,
+      imgUrl: DataUtils.pathToUrl(json['imgUrl'] as String),
       price: json['price'] as int,
       restaurant:
           RestaurantModel.fromJson(json['restaurant'] as Map<String, dynamic>),

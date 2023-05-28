@@ -141,7 +141,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
             (contex, index) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
-                child: ProductCard(productModel: productModels[index]),
+                child: ProductCard.fromProductModel(model: productModels[index]),
               );
             },
           childCount: productModels.length
