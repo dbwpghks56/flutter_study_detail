@@ -5,11 +5,13 @@ import 'package:first/product/component/product_card.dart';
 import 'package:first/product/model/product_model.dart';
 import 'package:first/restaurant/component/restaurant_card.dart';
 import 'package:first/restaurant/model/restaurant_detail_model.dart';
+import 'package:first/restaurant/provider/restaurant_provider.dart';
 import 'package:first/restaurant/repository/restaurant_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/const/data.dart';
+import '../model/restaurant_model.dart';
 
 class RestaurantDetailScreen extends ConsumerWidget {
   final String id;
@@ -22,26 +24,25 @@ class RestaurantDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(restaurantDetailProvider(id));
+
+    if(state == null) {
+      return DefaultLayout(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return DefaultLayout(
       title: title,
-      child: FutureBuilder<RestaurantDetailModel>(
-        future: ref.watch(restaurantRepositoryProvider).getRestaurantDetail(id: id),
-        builder: (_,AsyncSnapshot<RestaurantDetailModel> snapshot) {
-          if(!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          return CustomScrollView(
-            slivers: [
-              renderTop(snapshot.data!),
-              renderLabel(),
-              renderProducts(snapshot.data!.products),
-            ],
-          );
-        },
-      )
+      child: CustomScrollView(
+        slivers: [
+          renderTop(state),
+          // renderLabel(),
+          // renderProducts(state),
+        ],
+      ),
     );
   }
 
@@ -80,7 +81,7 @@ class RestaurantDetailScreen extends ConsumerWidget {
   }
 
   SliverToBoxAdapter renderTop(
-      RestaurantDetailModel item
+      RestaurantModel item
       ) {
     return SliverToBoxAdapter(
       child: RestaurantCard.fromModel(
