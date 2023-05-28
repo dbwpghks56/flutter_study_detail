@@ -99,28 +99,5 @@ class PaginationProvider<
     }
   }
 
-  // void getDetail({
-  //   required String id
-  // }) async {
-  //   // 만약에 아직 데이터가 하나도 없는 상태라면 (CursorPagination 이 아니라면)
-  //   // 데이터를 가져오는 시도를 한다.
-  //   if(state is! CursorPagination) {
-  //     await this.paginate();
-  //   }
-  //
-  //   // state가 CursorPagination 이 아닐 때 그냥 리턴
-  //   if(state is! CursorPagination) {
-  //     return;
-  //   }
-  //
-  //   final pState = state as CursorPagination;
-  //
-  //   final resp = await repository.getRestaurantDetail(id: id);
-  //
-  //   state = pState.copyWith(
-  //       data: pState.data.map<RestaurantModel>((e) => e.id == id ? resp : e).toList()
-  //   );
-  // }
-
 
 }
