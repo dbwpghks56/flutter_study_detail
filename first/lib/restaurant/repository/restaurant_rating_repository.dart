@@ -11,7 +11,7 @@ import '../../common/model/pagination_params.dart';
 
 part 'restaurant_rating_repository.g.dart';
 
-final ratingProvider = Provider.family<RestaurantRatingRepository, String> ((ref, id) {
+final ratingRepositoryProvider = Provider.family<RestaurantRatingRepository, String> ((ref, id) {
   final dio = ref.watch(dioProvider);
 
   return RestaurantRatingRepository(dio, baseUrl: "http://${ip}/restaurant/${id}/rating");

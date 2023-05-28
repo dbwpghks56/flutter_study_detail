@@ -10,7 +10,9 @@ class PaginationProvider<
   U extends IBasePaginationRepository<T>> extends StateNotifier<CursorPaginationBase> {
   final U repository;
 
-  PaginationProvider({required this.repository}) : super(CursorPaginationLoading());
+  PaginationProvider({required this.repository}) : super(CursorPaginationLoading()) {
+    paginate();
+  }
 
 
   Future<void> paginate({
@@ -90,7 +92,9 @@ class PaginationProvider<
       } else {
         state = resp;
       }
-    } catch(e) {
+    } catch(e, stack) {
+      print(e);
+      print(stack);
       state = CursorPaginationError(message: "Data Error");
     }
   }
