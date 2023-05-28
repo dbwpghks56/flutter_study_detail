@@ -3,6 +3,7 @@ import 'package:first/common/dio/dio.dart';
 import 'package:first/common/layout/default_layout.dart';
 import 'package:first/product/component/product_card.dart';
 import 'package:first/product/model/product_model.dart';
+import 'package:first/rating/component/rating_card.dart';
 import 'package:first/restaurant/component/restaurant_card.dart';
 import 'package:first/restaurant/model/restaurant_detail_model.dart';
 import 'package:first/restaurant/provider/restaurant_provider.dart';
@@ -59,6 +60,18 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
             renderLabel(),
           if(state is RestaurantDetailModel)
             renderProducts(state.products),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            sliver: SliverToBoxAdapter(
+              child: RatingCard(
+                rating: 4,
+                email: 'wpghks56@naver.com',
+                images: [],
+                avatarImage: AssetImage('asset/img/logo/codefactory_logo.png'),
+                content: '맛나요',
+              ),
+            ),
+          )
         ],
       ),
     );
