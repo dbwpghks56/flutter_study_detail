@@ -18,7 +18,6 @@ class RestaurantStateNotifier extends StateNotifier<CursorPagination<RestaurantM
   }) : super(){
     paginate();
   }
-
   paginate() async {
     final resp = await repository.paginate();
 
