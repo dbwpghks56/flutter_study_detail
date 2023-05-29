@@ -1,17 +1,30 @@
 import 'package:go_router/go_router.dart';
 import 'package:router_study/screens/1_basic_screen.dart';
+import 'package:router_study/screens/login_screen.dart';
 import 'package:router_study/screens/named_screen.dart';
 import 'package:router_study/screens/nested_child_screen.dart';
 import 'package:router_study/screens/nested_screen.dart';
 import 'package:router_study/screens/path_screen.dart';
 import 'package:router_study/screens/pop_base_screen.dart';
 import 'package:router_study/screens/pop_return_screen.dart';
+import 'package:router_study/screens/private_screen.dart';
 import 'package:router_study/screens/push_screen.dart';
 import 'package:router_study/screens/query_screen.dart';
 import 'package:router_study/screens/root_screen.dart';
 
+bool authState = false;
+
 // https://blog.codefactory.ai -> / -> path
 final router = GoRouter(
+  redirect: (context, state) {
+    if(state.location == '/login/private' && !authState) {
+      // return String(path) -> path 로 이동
+      // return null -> 원래 이동하려던 곳으로 이동
+      return '/login';
+    }
+
+    return null;
+  },
   routes: [
     GoRoute(
       path: "/",
@@ -97,7 +110,42 @@ final router = GoRouter(
                 }
             )
           ]
-        )
+        ),
+        GoRoute(
+          path: "login",
+          builder: (_, state) {
+            return LoginScreen();
+          },
+          routes: [
+            GoRoute(
+              path: 'private',
+              builder: (_, state) {
+                return PrivateScreen();
+              }
+            )
+          ]
+        ),
+        GoRoute(
+          path: "login2",
+          builder: (_, state) {
+            return LoginScreen();
+          },
+          routes: [
+            GoRoute(
+              path: 'private',
+              builder: (_, state) {
+                return PrivateScreen();
+              },
+              redirect: (context, state) {
+                if(!authState) {
+                  return '/login2';
+                }
+
+                return null;
+              }
+            )
+          ]
+        ),
       ]
     ),
   ]
