@@ -5,6 +5,7 @@ import 'package:router_study/screens/path_screen.dart';
 import 'package:router_study/screens/pop_base_screen.dart';
 import 'package:router_study/screens/pop_return_screen.dart';
 import 'package:router_study/screens/push_screen.dart';
+import 'package:router_study/screens/query_screen.dart';
 import 'package:router_study/screens/root_screen.dart';
 
 // https://blog.codefactory.ai -> / -> path
@@ -63,6 +64,12 @@ final router = GoRouter(
               }
             )
           ]
+        ),
+        GoRoute(
+          path: "query_param",
+          builder: (context, state) {
+            return QueryScreen();
+          }
         )
       ]
     ),
