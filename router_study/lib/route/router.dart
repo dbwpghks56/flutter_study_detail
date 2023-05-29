@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:router_study/screens/1_basic_screen.dart';
 import 'package:router_study/screens/named_screen.dart';
+import 'package:router_study/screens/path_screen.dart';
 import 'package:router_study/screens/pop_base_screen.dart';
 import 'package:router_study/screens/pop_return_screen.dart';
 import 'package:router_study/screens/push_screen.dart';
@@ -48,6 +49,21 @@ final router = GoRouter(
             )
           ]
         ),
+        GoRoute(
+          // 주소에 : 을 넣으면 값을 뒤에있는 값의 이름으로 변수로 받을 수 있음 ex) id변수
+          path: "path_param/:id",
+          builder: (context, state) {
+            return PathScreen();
+          },
+          routes: [
+            GoRoute(
+              path: ":name",
+              builder: (context, state) {
+                return PathScreen();
+              }
+            )
+          ]
+        )
       ]
     ),
   ]
