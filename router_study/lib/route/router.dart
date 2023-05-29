@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:router_study/screens/1_basic_screen.dart';
 import 'package:router_study/screens/login_screen.dart';
@@ -11,6 +12,9 @@ import 'package:router_study/screens/private_screen.dart';
 import 'package:router_study/screens/push_screen.dart';
 import 'package:router_study/screens/query_screen.dart';
 import 'package:router_study/screens/root_screen.dart';
+import 'package:router_study/screens/transition1_screen.dart';
+
+import '../screens/transition2_screen.dart';
 
 bool authState = false;
 
@@ -146,6 +150,29 @@ final router = GoRouter(
             )
           ]
         ),
+        GoRoute(
+          path: "transition",
+          builder: (_, state) {
+            return Transition1Screen();
+          },
+          routes: [
+            GoRoute(
+              path: "detail",
+              pageBuilder: (_, state) {
+                return CustomTransitionPage(
+                  transitionDuration: Duration(seconds: 3),
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  child: Transition2Screen()
+                );
+              }
+            )
+          ]
+        )
       ]
     ),
   ]
