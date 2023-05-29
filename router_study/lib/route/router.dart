@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:router_study/screens/1_basic_screen.dart';
+import 'package:router_study/screens/error_screen.dart';
 import 'package:router_study/screens/login_screen.dart';
 import 'package:router_study/screens/named_screen.dart';
 import 'package:router_study/screens/nested_child_screen.dart';
@@ -175,7 +176,10 @@ final router = GoRouter(
         )
       ]
     ),
-  ]
+  ],
+  errorBuilder: (context, state) {
+    return ErrorScreen(error: state.error.toString());
+  }
 );
 
 
