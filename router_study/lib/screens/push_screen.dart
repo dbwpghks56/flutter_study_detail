@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:router_study/layout/default_layout.dart';
 
-class RootScreen extends StatelessWidget {
-  const RootScreen({Key? key}) : super(key: key);
+class PushScreen extends StatelessWidget {
+  const PushScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,21 +12,19 @@ class RootScreen extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: () {
-              context.go('/basic');
+              context.push("/basic");
             },
-            child: Text("Go Basic"),
+            child: Text(
+              "push Basic"
+            ),
           ),
           ElevatedButton(
             onPressed: () {
-              context.goNamed('named_screen');
+              context.go("/basic");
             },
-            child: Text("Go Named"),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              context.go('/push');
-            },
-            child: Text("Go Push"),
+            child: Text(
+                "go Basic"
+            ),
           )
         ],
       ),
