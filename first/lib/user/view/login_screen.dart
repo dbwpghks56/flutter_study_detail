@@ -8,6 +8,8 @@ import 'package:first/common/const/data.dart';
 import 'package:first/common/layout/default_layout.dart';
 import 'package:first/common/secure_storage/secure_storage.dart';
 import 'package:first/common/view/root_tab.dart';
+import 'package:first/user/model/user_model.dart';
+import 'package:first/user/provider/user_me_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -29,8 +31,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    final dio = Dio();
+    final state = ref.watch(userMeProvider);
 
     return DefaultLayout(
         child: SingleChildScrollView(
@@ -66,35 +67,36 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   const SizedBox(height: 16.0,),
                   ElevatedButton(
-                      onPressed: () async {
-                        // ID:password
-                        final rawString = '${userName}:${password}';
-
-                        // base64 encoding
-                        Codec<String, String> stringToBase64 = utf8.fuse(base64);
-
-                        String basicToken = stringToBase64.encode(rawString);
-
-                        final resp = await dio.post(
-                          'http://${ip}/auth/login',
-                          options: Options(
-                            headers: {
-                              'authorization' : 'Basic ${basicToken}'
-                            },
-                          ),
-                        );
-
-                        final refreshToken = resp.data['refreshToken'];
-                        final accessToken = resp.data['accessToken'];
-
-                        final storage = ref.read(secureStoageProvider);
-
-                        await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
-                        await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
-                        
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => RootTab())
-                        );
+                      onPressed: state is UserModelLoading ? null : () async {
+                        ref.read(userMeProvider.notifier).login(username: userName, password: password);
+                        // // ID:password
+                        // final rawString = '${userName}:${password}';
+                        //
+                        // // base64 encoding
+                        // Codec<String, String> stringToBase64 = utf8.fuse(base64);
+                        //
+                        // String basicToken = stringToBase64.encode(rawString);
+                        //
+                        // final resp = await dio.post(
+                        //   'http://${ip}/auth/login',
+                        //   options: Options(
+                        //     headers: {
+                        //       'authorization' : 'Basic ${basicToken}'
+                        //     },
+                        //   ),
+                        // );
+                        //
+                        // final refreshToken = resp.data['refreshToken'];
+                        // final accessToken = resp.data['accessToken'];
+                        //
+                        // final storage = ref.read(secureStoageProvider);
+                        //
+                        // await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                        // await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+                        //
+                        // Navigator.of(context).push(
+                        //     MaterialPageRoute(builder: (_) => RootTab())
+                        // );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PRIMARY_COLOR,
@@ -103,14 +105,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   TextButton(
                       onPressed: () async {
-                        final resp = await dio.post(
-                          'http://${ip}/auth/token',
-                          options: Options(
-                            headers: {
-                              'authorization' : 'Bearer '
-                            },
-                          ),
-                        );
+                        // final resp = await dio.post(
+                        //   'http://${ip}/auth/token',
+                        //   options: Options(
+                        //     headers: {
+                        //       'authorization' : 'Bearer '
+                        //     },
+                        //   ),
+                        // );
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.black
