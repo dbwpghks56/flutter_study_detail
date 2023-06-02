@@ -1,10 +1,14 @@
+import 'package:first/common/view/root_tab.dart';
+import 'package:first/common/view/splash_screen.dart';
+import 'package:first/restaurant/view/restaurant_detail_screen.dart';
 import 'package:first/user/model/user_model.dart';
 import 'package:first/user/provider/user_me_provider.dart';
+import 'package:first/user/view/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final uathProvier = ChangeNotifierProvider<AuthProvider>((ref) {
+final authProvider = ChangeNotifierProvider<AuthProvider>((ref) {
   return AuthProvider(ref: ref);
 });
 
@@ -20,6 +24,34 @@ class AuthProvider extends ChangeNotifier {
       }
     });
   }
+
+  List<GoRoute> get routes => [
+    GoRoute(
+      path: '/',
+      name: RootTab.routeName,
+      builder: (_,state) => RootTab(),
+      routes: [
+        GoRoute(
+          path: 'restaurant/:rid/:rtitle',
+          builder: (_, state) => RestaurantDetailScreen(
+              id: state.pathParameters['rid']!,
+              title: state.pathParameters['rtitle']!
+          ),
+        )
+      ]
+    ),
+    GoRoute(
+      path: '/splash',
+      name: SplashScreen.routeName,
+      builder: (_,state) => SplashScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      name: LoginScreen.routeName,
+      builder: (_,state) => LoginScreen(),
+    ),
+
+  ];
 
   // Splash Screen
   String? redirectLogic(GoRouterState state) {
