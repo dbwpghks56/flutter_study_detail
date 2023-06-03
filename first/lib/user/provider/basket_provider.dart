@@ -1,22 +1,42 @@
 import 'package:first/product/model/basket_item_model.dart';
+import 'package:first/product/model/patch_basket_body.dart';
 import 'package:first/product/model/product_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 
+import '../repository/user_me_repository.dart';
+
 final basketProvider = StateNotifierProvider<BasketProvider, List<BasketItemModel>>
   ((ref) {
-    return BasketProvider();
+    final repository = ref.watch(userMeRepositoryProvider);
+    return BasketProvider(
+      repository: repository
+    );
 });
 
 class BasketProvider extends StateNotifier<List<BasketItemModel>> {
-  BasketProvider() : super([]);
+  final UserMeRepository repository;
+
+  BasketProvider({required this.repository}) : super([]);
+
+  Future<void> patchBasket() async {
+    repository.patchBasket(
+      body: BasketBody(
+        basketBodyBasket: state.map((e) {
+          return PathBasketBodyBasket(
+              productId: e.productModel.id,
+              count: e.count
+          );
+        }).toList()
+      )
+    );
+  }
 
   Future<void> addToBasket({
     required ProductModel productModel,
   }) async {
     // 아직 장바구니에 해당되는 상품이 없다면 장바구니에 상품을 추가
     // 상품이 존재한다면 장바구니에 있는 값에 플러스를 한다.
-
     final exists = state.firstWhereOrNull((e) => e.productModel.id == productModel.id)
         != null;
 
@@ -32,6 +52,10 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
         )
       ];
     }
+
+    // Optimistic Response (긍정적 응답)
+    // 응답이 성공할 것이라고 가정하고 상태를 먼저 업데이트한다.
+    await patchBasket();
   }
 
   Future<void> removeFromBasket({
@@ -60,6 +84,7 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
       state = state.where((element) => element.productModel.id != productModel.id).toList();
     }
 
+    await patchBasket();
   }
 }
 
