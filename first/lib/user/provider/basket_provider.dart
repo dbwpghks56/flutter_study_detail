@@ -4,6 +4,7 @@ import 'package:first/product/model/product_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 
+import '../../product/model/product_list_model.dart';
 import '../repository/user_me_repository.dart';
 
 final basketProvider = StateNotifierProvider<BasketProvider, List<BasketItemModel>>
@@ -33,7 +34,7 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
   }
 
   Future<void> addToBasket({
-    required ProductModel productModel,
+    required ProductListModel productModel,
   }) async {
     // 아직 장바구니에 해당되는 상품이 없다면 장바구니에 상품을 추가
     // 상품이 존재한다면 장바구니에 있는 값에 플러스를 한다.
@@ -59,7 +60,7 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
   }
 
   Future<void> removeFromBasket({
-    required ProductModel productModel,
+    required ProductListModel productModel,
     // true면 count 상관 없이 전부 삭제
     bool isDelete = false
   }) async {
@@ -79,7 +80,7 @@ class BasketProvider extends StateNotifier<List<BasketItemModel>> {
     if(existsProduct.count > 1) {
       state = state.map(
               (e) => e.productModel.id == productModel.id ?
-              e.copyWith(count: e.count + 1): e).toList();
+              e.copyWith(count: e.count - 1): e).toList();
     } else if(existsProduct.count == 1 || isDelete) {
       state = state.where((element) => element.productModel.id != productModel.id).toList();
     }

@@ -8,8 +8,8 @@ part of 'basket_item_model.dart';
 
 BasketItemModel _$BasketItemModelFromJson(Map<String, dynamic> json) =>
     BasketItemModel(
-      productModel:
-          ProductModel.fromJson(json['productModel'] as Map<String, dynamic>),
+      productModel: ProductListModel.fromJson(
+          json['productModel'] as Map<String, dynamic>),
       count: json['count'] as int,
     );
 

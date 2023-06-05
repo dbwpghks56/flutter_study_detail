@@ -4,6 +4,7 @@ import 'package:first/common/dio/dio.dart';
 import 'package:first/common/layout/default_layout.dart';
 import 'package:first/common/model/cursor_pagination_model.dart';
 import 'package:first/product/component/product_card.dart';
+import 'package:first/product/model/product_list_model.dart';
 import 'package:first/product/model/product_model.dart';
 import 'package:first/rating/component/rating_card.dart';
 import 'package:first/restaurant/component/restaurant_card.dart';
@@ -102,7 +103,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
           if(state is RestaurantDetailModel)
             renderLabel(),
           if(state is RestaurantDetailModel)
-            renderProducts(state.products),
+            renderProducts(state.products, state),
           if(ratingState is CursorPagination<RatingModel>)
             renderRatings(models: ratingState.data),
         ],
@@ -162,7 +163,8 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
   }
 
   SliverPadding renderProducts(
-      List<ProductModel> productModels
+      List<ProductModel> productModels,
+      RestaurantModel model
       ) {
     return SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -172,7 +174,13 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
               return InkWell(
                 onTap: () {
                   ref.read(basketProvider.notifier).addToBasket(
-                    productModel: productModels[index]
+                    productModel: ProductListModel(
+                        id: productModels[index].id,
+                        name: productModels[index].name,
+                        detail: productModels[index].detail,
+                        imgUrl: productModels[index].imgUrl,
+                        price: productModels[index].price,
+                        restaurant: model)
                   );
                 },
                 child: Padding(

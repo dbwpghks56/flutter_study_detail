@@ -122,12 +122,15 @@ class ProductCard extends ConsumerWidget {
           ),
         ),
         if(onMinus != null && onAdd != null)
-          _Footer(
-            total: (basket.firstWhere((element) => element.productModel.id == id).count *
-                basket.firstWhere((element) => element.productModel.id == id).productModel.price).toString(),
-            count: basket.firstWhere((element) => element.productModel.id == id).count,
-            onMinus: onMinus!,
-            onAdd: onAdd!
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: _Footer(
+              total: (basket.firstWhere((element) => element.productModel.id == id).count *
+                  basket.firstWhere((element) => element.productModel.id == id).productModel.price).toString(),
+              count: basket.firstWhere((element) => element.productModel.id == id).count,
+              onMinus: onMinus!,
+              onAdd: onAdd!
+            ),
           ),
       ],
     );
@@ -154,7 +157,7 @@ class _Footer extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            '총액 \${totoal}',
+            '총액 \\ ${total}',
             style: TextStyle(
               color: PRIMARY_COLOR,
               fontWeight: FontWeight.w500
@@ -167,6 +170,7 @@ class _Footer extends StatelessWidget {
               icon: Icons.remove,
               onTap: onMinus
             ),
+            const SizedBox(width: 8.0),
             Text(
               count.toString(),
               style: TextStyle(
@@ -174,6 +178,7 @@ class _Footer extends StatelessWidget {
                   fontWeight: FontWeight.w500
               ),
             ),
+            const SizedBox(width: 8.0),
             renderButton(
               icon: Icons.add,
               onTap: onAdd

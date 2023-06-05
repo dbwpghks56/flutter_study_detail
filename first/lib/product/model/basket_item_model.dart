@@ -1,3 +1,4 @@
+import 'package:first/product/model/product_list_model.dart';
 import 'package:first/product/model/product_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -5,7 +6,7 @@ part 'basket_item_model.g.dart';
 
 @JsonSerializable()
 class BasketItemModel {
-  final ProductModel productModel;
+  final ProductListModel productModel;
   final int count;
 
   BasketItemModel({
@@ -14,7 +15,7 @@ class BasketItemModel {
   });
 
   BasketItemModel copyWith({
-    ProductModel? productModel,
+    ProductListModel? productModel,
     int? count
   }) {
     return BasketItemModel(
