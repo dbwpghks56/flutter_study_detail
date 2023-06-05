@@ -1,15 +1,19 @@
+import 'dart:ffi';
+
 import 'package:first/common/const/colors.dart';
 import 'package:first/product/model/product_list_model.dart';
 import 'package:first/product/model/product_model.dart';
+import 'package:first/user/provider/basket_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends ConsumerWidget {
   final Image image;
   final String name;
   final String detail;
   final int price;
   final String id;
-  final VoidCallback? onSubtract;
+  final VoidCallback? onMinus;
   final VoidCallback? onAdd;
 
   const ProductCard({
@@ -18,13 +22,15 @@ class ProductCard extends StatelessWidget {
     required this.name,
     required this.detail,
     required this.price,
-    this.onSubtract,
+    this.onMinus,
     this.onAdd,
     Key? key,
   }) : super(key: key);
 
   factory ProductCard.fromProductListModel({
-    required ProductListModel listModel
+    required ProductListModel listModel,
+    VoidCallback? onMinus,
+    VoidCallback? onAdd,
   }) {
     return ProductCard(
       id: listModel.id,
@@ -37,12 +43,14 @@ class ProductCard extends StatelessWidget {
       name: listModel.name,
       detail: listModel.detail,
       price: listModel.price,
+      onMinus: onMinus,
+      onAdd: onAdd,
     );
   }
 
   factory ProductCard.fromProductModel({
     required ProductModel model,
-    VoidCallback? onSubtract,
+    VoidCallback? onMinus,
     VoidCallback? onAdd,
   }) {
     return ProductCard(
@@ -56,56 +64,159 @@ class ProductCard extends StatelessWidget {
       name: model.name,
       detail: model.detail,
       price: model.price,
+      onMinus: onMinus,
+      onAdd: onAdd,
     );
   }
 
   @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final basket = ref.watch(basketProvider);
+
+    return Column(
+      children: [
+        IntrinsicHeight(
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  8.0,
+                ),
+                child: image,
+              ),
+              const SizedBox(width: 16.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      detail,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(
+                        color: BODY_TEXT_COLOR,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                    Text(
+                      '￦$price',
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: PRIMARY_COLOR,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        if(onMinus != null && onAdd != null)
+          _Footer(
+            total: (basket.firstWhere((element) => element.productModel.id == id).count *
+                basket.firstWhere((element) => element.productModel.id == id).productModel.price).toString(),
+            count: basket.firstWhere((element) => element.productModel.id == id).count,
+            onMinus: onMinus!,
+            onAdd: onAdd!
+          ),
+      ],
+    );
+  }
+}
+
+class _Footer extends StatelessWidget {
+  final String total;
+  final int count;
+  final VoidCallback onMinus;
+  final VoidCallback onAdd;
+
+  const _Footer({
+    required this.total,
+    required this.count,
+    required this.onMinus,
+    required this.onAdd,
+    Key? key
+  }) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(
-              8.0,
-            ),
-            child: image,
-          ),
-          const SizedBox(width: 16.0),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  detail,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
-                    color: BODY_TEXT_COLOR,
-                    fontSize: 14.0,
-                  ),
-                ),
-                Text(
-                  '￦$price',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: PRIMARY_COLOR,
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            '총액 \${totoal}',
+            style: TextStyle(
+              color: PRIMARY_COLOR,
+              fontWeight: FontWeight.w500
             ),
           ),
-        ],
+        ),
+        Row(
+          children: [
+            renderButton(
+              icon: Icons.remove,
+              onTap: onMinus
+            ),
+            Text(
+              count.toString(),
+              style: TextStyle(
+                  color: PRIMARY_COLOR,
+                  fontWeight: FontWeight.w500
+              ),
+            ),
+            renderButton(
+              icon: Icons.add,
+              onTap: onAdd
+            )
+          ],
+        )
+      ],
+    );
+  }
+  Widget renderButton({
+    required IconData icon,
+    required VoidCallback onTap
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(
+          color: PRIMARY_COLOR,
+          width: 1.0
+        )
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: Icon(icon, color: PRIMARY_COLOR,),
       ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

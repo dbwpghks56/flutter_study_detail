@@ -11,9 +11,11 @@ import 'package:first/restaurant/model/restaurant_detail_model.dart';
 import 'package:first/restaurant/provider/rating_provider.dart';
 import 'package:first/restaurant/provider/restaurant_provider.dart';
 import 'package:first/restaurant/repository/restaurant_repository.dart';
+import 'package:first/restaurant/view/basket_screen.dart';
 import 'package:first/user/provider/basket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletons/skeletons.dart';
 import '../../common/const/data.dart';
 import 'package:badges/badges.dart' as badges;
@@ -71,7 +73,7 @@ class _RestaurantDetailScreenState extends ConsumerState<RestaurantDetailScreen>
       floatingActionButton: FloatingActionButton(
         backgroundColor: PRIMARY_COLOR,
         onPressed: () {
-
+          context.pushNamed(BasketScreen.routeName);
         },
         child: badges.Badge(
           showBadge: basket.isNotEmpty,
