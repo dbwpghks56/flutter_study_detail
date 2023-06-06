@@ -28,7 +28,7 @@ class OrderStateProvider extends StateNotifier<List<OrderModel>> {
       final state = ref.read(basketProvider);
       final id = uuid.v4();
 
-      final resp = await repository.postOrder(
+      await repository.postOrder(
           body: PostOrderBody(
               id: id,
               products: state.map((e) => PostOrderBodyProduct(
@@ -44,6 +44,7 @@ class OrderStateProvider extends StateNotifier<List<OrderModel>> {
 
       return true;
     } catch(e) {
+      print(e.toString());
       return false;
     }
   }
