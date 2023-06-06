@@ -21,6 +21,7 @@ class _App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
 
+    // goROuter 업데이트된 버전으로 쓰는 법
     return MaterialApp.router(
       theme: ThemeData(
         fontFamily: 'NotoSans'
