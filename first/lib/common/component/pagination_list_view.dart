@@ -92,7 +92,7 @@ class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<Pag
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Center(
                   child: cp is CursorPaginationFetchingMore ?
-                  CircularProgressIndicator() : Text("Last Data"),
+                  CircularProgressIndicator() : Text("마지막 주문입니다 ㅠㅠ"),
                 ),
               );
             }
