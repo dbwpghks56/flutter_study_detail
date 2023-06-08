@@ -32,6 +32,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     // TODO: implement onRequest
+    print('[REQ] [${options.method}] ${options.uri}');
     if(options.headers['accessToken'] == 'true') {
       // 헤더 삭제
       options.headers.remove('accessToken');
@@ -63,7 +64,8 @@ class CustomInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // TODO: implement onResponse
-
+    print(
+        '[RES] [${response.requestOptions.method}] ${response.requestOptions.uri}');
 
     return super.onResponse(response, handler);
   }
@@ -71,6 +73,8 @@ class CustomInterceptor extends Interceptor {
   // 3) 에러가 났을 때
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
+    print('[ERR] [${err.requestOptions.method}] ${err.requestOptions.uri}');
+
     // 401 에러 = Token 재발급 시도, 재발금 되변 새 토큰으로 요청
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
 
