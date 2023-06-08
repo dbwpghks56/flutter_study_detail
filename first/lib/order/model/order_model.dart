@@ -15,14 +15,14 @@ class OrderProductModel{
   @JsonKey(
     fromJson: DataUtils.pathToUrl
   )
-  final String imageUrl;
+  final String imgUrl;
   final int price;
 
   OrderProductModel({
     required this.id,
     required this.name,
     required this.detail,
-    required this.imageUrl,
+    required this.imgUrl,
     required this.price
   });
   

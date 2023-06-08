@@ -1,5 +1,6 @@
 import 'package:first/common/const/colors.dart';
 import 'package:first/common/layout/default_layout.dart';
+import 'package:first/order/view/order_screen.dart';
 import 'package:first/product/view/product_screen.dart';
 import 'package:first/restaurant/view/restaurant_screen.dart';
 import 'package:first/user/view/profile_screen.dart';
@@ -85,9 +86,7 @@ SingleTickerProviderStateMixin {
         children: [
           RestaurantScreen(),
           ProductScreen(),
-          Container(
-            child: Text("receip"),
-          ),
+          OrderScreen(),
           ProfileScreen()
         ],
       ),

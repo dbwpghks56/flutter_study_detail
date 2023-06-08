@@ -1,3 +1,5 @@
+import 'package:first/common/model/cursor_pagination_model.dart';
+import 'package:first/common/provider/pagination_provider.dart';
 import 'package:first/order/model/order_model.dart';
 import 'package:first/order/model/post_order_body.dart';
 import 'package:first/user/provider/basket_provider.dart';
@@ -7,28 +9,30 @@ import 'package:uuid/uuid.dart';
 import '../repository/order_repository.dart';
 
 final orderProvider = StateNotifierProvider
-  <OrderStateProvider, List<OrderModel>>((ref) {
+  <OrderStateProvider, CursorPaginationBase>((ref) {
     final orderRepository = ref.watch(orderRepositoryProvider);
 
-    return OrderStateProvider(ref: ref,repository: orderRepository);
+    return OrderStateProvider(ref: ref, repository: orderRepository);
 });
 
-class OrderStateProvider extends StateNotifier<List<OrderModel>> {
+class OrderStateProvider extends PaginationProvider<
+  OrderModel,
+  OrderRepository
+> {
   final Ref ref;
-  final OrderRepository repository;
 
   OrderStateProvider({
     required this.ref,
-    required this.repository
-  }) : super([]);
+    required super.repository
+  });
 
   Future<bool> postOder() async{
     try{
       final uuid = Uuid();
       final state = ref.read(basketProvider);
       final id = uuid.v4();
-
-      await repository.postOrder(
+      print(DateTime.now().toString());
+      final resp = await repository.postOrder(
           body: PostOrderBody(
               id: id,
               products: state.map((e) => PostOrderBodyProduct(
@@ -36,8 +40,7 @@ class OrderStateProvider extends StateNotifier<List<OrderModel>> {
                   count: e.count
               )).toList(),
               totalPrice: state.fold<int>(
-                  0,
-                      (pre, next) => pre + next.count * next.productModel.price),
+                  0, (pre, next) => pre + next.count * next.productModel.price),
               createdAt: DateTime.now().toString()
           )
       );

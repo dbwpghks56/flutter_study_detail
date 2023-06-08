@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class OrderDoneScreen extends StatelessWidget {
-  static String get routeName => "orderScreen";
+  static String get routeName => "orderDone";
 
   const OrderDoneScreen({Key? key}) : super(key: key);
 
