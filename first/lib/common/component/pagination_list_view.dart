@@ -81,6 +81,7 @@ class _PaginationListViewState<T extends IModelWithId> extends ConsumerState<Pag
 
     final cp = state as CursorPagination<T>;
 
+    // 페이지네이션 다시 불러올 때
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: RefreshIndicator(
